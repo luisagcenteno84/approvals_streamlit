@@ -2,48 +2,39 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime
 import uuid
+from database import (
+    init_db, 
+    add_submission_to_db, 
+    get_all_submissions, 
+    update_approval_in_db,
+    get_pending_submissions_for_team,
+    clear_all_data
+)
 
-# Initialize session state for storing submissions
-if 'submissions' not in st.session_state:
-    st.session_state.submissions = []
+# Initialize database on app start
+@st.cache_resource
+def initialize_database():
+    init_db()
+    return True
+
+# Initialize the database
+initialize_database()
 
 def add_submission(name, description, purpose):
-    """Add a new submission to the session state"""
-    submission = {
-        'id': str(uuid.uuid4()),
-        'name': name,
-        'description': description,
-        'purpose': purpose,
-        'timestamp': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        'data_approval': 'Pending',
-        'security_approval': 'Pending',
-        'legal_approval': 'Pending',
-        'overall_status': 'Pending'
-    }
-    st.session_state.submissions.append(submission)
-    return submission['id']
+    """Add a new submission to the database"""
+    submission = add_submission_to_db(name, description, purpose)
+    return submission.id
 
 def update_approval(submission_id, team, status):
     """Update approval status for a specific team"""
-    for submission in st.session_state.submissions:
-        if submission['id'] == submission_id:
-            if team == 'Data':
-                submission['data_approval'] = status
-            elif team == 'Security':
-                submission['security_approval'] = status
-            elif team == 'Legal':
-                submission['legal_approval'] = status
-            
-            # Update overall status
-            submission['overall_status'] = calculate_overall_status(submission)
-            break
+    update_approval_in_db(submission_id, team, status)
 
 def calculate_overall_status(submission):
     """Calculate overall status based on team approvals"""
     approvals = [
-        submission['data_approval'],
-        submission['security_approval'],
-        submission['legal_approval']
+        submission.data_approval,
+        submission.security_approval,
+        submission.legal_approval
     ]
     
     if 'Rejected' in approvals:
