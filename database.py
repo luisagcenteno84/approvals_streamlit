@@ -5,11 +5,10 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 import uuid
 
-# Database configuration
-DATABASE_URL = os.getenv('DATABASE_URL')
-if not DATABASE_URL:
-    raise ValueError("DATABASE_URL environment variable is required")
-engine = create_engine(DATABASE_URL)
+# Database configuration - using SQLite (override any PostgreSQL env vars)
+DATABASE_URL = 'sqlite:///./data/approval_workflow.db'
+print(f"Using SQLite database: {DATABASE_URL}")
+engine = create_engine(DATABASE_URL, echo=False, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
