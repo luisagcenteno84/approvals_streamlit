@@ -14,9 +14,10 @@ This is a Streamlit-based web application for managing IT request approvals. The
 
 ### Backend Architecture
 - **Runtime**: Python-based server-side application
+- **Database**: PostgreSQL with SQLAlchemy ORM for data persistence
 - **Data Processing**: Pandas for data manipulation and display
 - **Business Logic**: Functional programming approach with utility functions
-- **Session Management**: Streamlit's built-in session state mechanism
+- **Session Management**: Database-backed storage with SQLAlchemy models
 
 ## Key Components
 
@@ -26,7 +27,8 @@ This is a Streamlit-based web application for managing IT request approvals. The
 3. **calculate_overall_status()**: Determines final approval status based on team decisions
 
 ### Data Model
-- **Submission Object**: Contains ID, name, description, purpose, timestamp, and approval statuses
+- **Submission Entity**: SQLAlchemy model with ID, name, description, purpose, timestamp, and approval statuses
+- **Database Schema**: PostgreSQL table with columns for each approval team status
 - **Approval Teams**: Data, Security, and Legal teams with independent approval workflows
 - **Status Values**: Pending, Approved, Rejected for granular tracking
 
@@ -50,30 +52,33 @@ This is a Streamlit-based web application for managing IT request approvals. The
 ### Python Packages
 - **streamlit**: Web application framework
 - **pandas**: Data manipulation and analysis
+- **sqlalchemy**: ORM for database operations
+- **psycopg2-binary**: PostgreSQL database adapter
 - **uuid**: Unique identifier generation
 - **datetime**: Timestamp management
 
 ### Runtime Requirements
 - Python 3.7+ environment
 - Streamlit server for web hosting
-- No external database dependencies (uses in-memory storage)
+- PostgreSQL database for persistent storage
 
 ## Deployment Strategy
 
 ### Current Implementation
-- **Storage**: Session-based (temporary, non-persistent)
+- **Storage**: PostgreSQL database (persistent across sessions)
 - **Hosting**: Streamlit server deployment
-- **Scalability**: Single-user sessions, no shared state
+- **Scalability**: Multi-user support with shared database state
 
 ### Limitations
-- Data persistence only during active sessions
-- No user authentication or multi-user support
-- Limited to single-instance deployment
+- No user authentication or authorization system
+- All users can see and modify all submissions
+- Basic approval workflow without advanced features
 
 ### Future Considerations
-- Database integration for persistent storage
-- User authentication system
-- Multi-user session management
+- User authentication and authorization system
+- Role-based access control for different approval teams
+- Email notifications for approval workflows
+- Advanced reporting and analytics
 - API integration for external systems
 
 ## Changelog
@@ -81,6 +86,7 @@ This is a Streamlit-based web application for managing IT request approvals. The
 ```
 Changelog:
 - July 04, 2025. Initial setup
+- July 04, 2025. Added PostgreSQL database integration for persistent storage
 ```
 
 ## User Preferences
@@ -91,12 +97,12 @@ Preferred communication style: Simple, everyday language.
 
 ## Notes for Development
 
-The application currently uses session state for data storage, which means data is lost when the browser session ends. The architecture is designed for easy extension to include:
+The application now uses PostgreSQL database for persistent data storage, allowing submissions to persist across sessions. The architecture is designed for easy extension to include:
 
-- Database integration (likely PostgreSQL with Drizzle ORM)
 - User authentication and authorization
+- Role-based access control for approval teams
 - Email notifications for approval workflows
 - Advanced reporting and analytics
 - Integration with external IT service management tools
 
-The modular function design makes it straightforward to add new approval teams, modify approval workflows, or integrate with external data sources.
+The modular function design makes it straightforward to add new approval teams, modify approval workflows, or integrate with external data sources. Database operations are handled through SQLAlchemy ORM with proper session management.

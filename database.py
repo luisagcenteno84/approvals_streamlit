@@ -70,14 +70,15 @@ def update_approval_in_db(submission_id, team, status):
         submission = db.query(Submission).filter(Submission.id == submission_id).first()
         if submission:
             if team == 'Data':
-                submission.data_approval = status
+                setattr(submission, 'data_approval', status)
             elif team == 'Security':
-                submission.security_approval = status
+                setattr(submission, 'security_approval', status)
             elif team == 'Legal':
-                submission.legal_approval = status
+                setattr(submission, 'legal_approval', status)
             
             # Update overall status
-            submission.overall_status = calculate_overall_status_db(submission)
+            overall_status = calculate_overall_status_db(submission)
+            setattr(submission, 'overall_status', overall_status)
             db.commit()
             return submission
         return None
