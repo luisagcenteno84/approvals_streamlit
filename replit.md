@@ -14,7 +14,7 @@ This is a Streamlit-based web application for managing IT request approvals. The
 
 ### Backend Architecture
 - **Runtime**: Python-based server-side application
-- **Database**: PostgreSQL with SQLAlchemy ORM for data persistence
+- **Database**: SQLite with SQLAlchemy ORM for data persistence
 - **Data Processing**: Pandas for data manipulation and display
 - **Business Logic**: Functional programming approach with utility functions
 - **Session Management**: Database-backed storage with SQLAlchemy models
@@ -28,7 +28,7 @@ This is a Streamlit-based web application for managing IT request approvals. The
 
 ### Data Model
 - **Submission Entity**: SQLAlchemy model with ID, name, description, purpose, timestamp, and approval statuses
-- **Database Schema**: PostgreSQL table with columns for each approval team status
+- **Database Schema**: SQLite table with columns for each approval team status
 - **Approval Teams**: Data, Security, and Legal teams with independent approval workflows
 - **Status Values**: Pending, Approved, Rejected for granular tracking
 
@@ -53,19 +53,18 @@ This is a Streamlit-based web application for managing IT request approvals. The
 - **streamlit**: Web application framework
 - **pandas**: Data manipulation and analysis
 - **sqlalchemy**: ORM for database operations
-- **psycopg2-binary**: PostgreSQL database adapter
 - **uuid**: Unique identifier generation
 - **datetime**: Timestamp management
 
 ### Runtime Requirements
 - Python 3.7+ environment
 - Streamlit server for web hosting
-- PostgreSQL database for persistent storage
+- SQLite database for persistent storage (automatically created)
 
 ## Deployment Strategy
 
 ### Current Implementation
-- **Storage**: PostgreSQL database (persistent across sessions)
+- **Storage**: SQLite database (persistent across sessions)
 - **Hosting**: Streamlit server deployment
 - **Scalability**: Multi-user support with shared database state
 
@@ -87,6 +86,8 @@ This is a Streamlit-based web application for managing IT request approvals. The
 Changelog:
 - July 04, 2025. Initial setup
 - July 04, 2025. Added PostgreSQL database integration for persistent storage
+- July 04, 2025. Added Docker containerization and Google Cloud Run deployment configuration
+- July 04, 2025. Migrated from PostgreSQL to SQLite for simpler deployment
 ```
 
 ## User Preferences
@@ -97,7 +98,7 @@ Preferred communication style: Simple, everyday language.
 
 ## Notes for Development
 
-The application now uses PostgreSQL database for persistent data storage, allowing submissions to persist across sessions. The architecture is designed for easy extension to include:
+The application now uses SQLite database for persistent data storage, allowing submissions to persist across sessions. The architecture is designed for easy extension to include:
 
 - User authentication and authorization
 - Role-based access control for approval teams
@@ -105,4 +106,4 @@ The application now uses PostgreSQL database for persistent data storage, allowi
 - Advanced reporting and analytics
 - Integration with external IT service management tools
 
-The modular function design makes it straightforward to add new approval teams, modify approval workflows, or integrate with external data sources. Database operations are handled through SQLAlchemy ORM with proper session management.
+The modular function design makes it straightforward to add new approval teams, modify approval workflows, or integrate with external data sources. Database operations are handled through SQLAlchemy ORM with proper session management. SQLite provides simple deployment without external database dependencies.
