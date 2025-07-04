@@ -23,10 +23,12 @@ steps:
       - '--port'
       - '5000'
       - '--allow-unauthenticated'
-      - '--set-env-vars'
-      - 'PORT=5000'
       - '--memory'
       - '512Mi'
+      - '--cpu'
+      - '1'
+      - '--timeout'
+      - '300'
 
 images:
   - 'gcr.io/$PROJECT_ID/approval-workflow:$COMMIT_SHA'

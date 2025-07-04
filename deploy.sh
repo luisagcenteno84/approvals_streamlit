@@ -32,7 +32,9 @@ gcloud run deploy $SERVICE_NAME \
     --platform managed \
     --port 5000 \
     --allow-unauthenticated \
-    --set-env-vars PORT=5000 \
+    --memory 512Mi \
+    --cpu 1 \
+    --timeout 300 \
     --project $PROJECT_ID
 
 echo "Deployment completed!"

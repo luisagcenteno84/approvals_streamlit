@@ -84,7 +84,6 @@ The SQLite database will be automatically created in the `data/` directory when 
 
 ## Environment Variables
 
-- `DATABASE_URL`: SQLite database path (optional, defaults to `sqlite:///./data/approval_workflow.db`)
 - `PORT`: Application port (default: 5000)
 
 ## Data Persistence

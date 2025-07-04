@@ -86,20 +86,19 @@ If you need persistent data across deployments, consider:
 3. **Migrate to Cloud SQL** (For high availability):
 ```bash
 # If you need full database persistence, consider migrating to Cloud SQL
-# Update DATABASE_URL environment variable accordingly
+# This would require code changes to support PostgreSQL connection strings
 ```
 
 ## Environment Configuration
 
-### Required Environment Variables
+### Environment Variables
 
-- `PORT`: Application port (automatically set by Cloud Run)
-- `DATABASE_URL`: PostgreSQL connection string
+- `PORT`: Application port (automatically set by Cloud Run to 5000)
 
 ### Optional Environment Variables
 
-- `PYTHONUNBUFFERED`: Set to 1 for better logging
-- `STREAMLIT_SERVER_HEADLESS`: Set to true for headless mode
+- `PYTHONUNBUFFERED`: Set to 1 for better logging (automatically configured in Dockerfile)
+- `STREAMLIT_SERVER_HEADLESS`: Set to true for headless mode (automatically configured)
 
 ## Security Considerations
 
@@ -186,9 +185,9 @@ gcloud logs tail "resource.type=cloud_run_revision AND resource.labels.service_n
 
 ## Cost Optimization
 
-- Use `--min-instances 0` to scale to zero when not in use
-- Choose appropriate CPU and memory allocations
-- Consider using Cloud SQL with automatic scaling
+- Use `--min-instances 0` to scale to zero when not in use (default behavior)
+- Choose appropriate CPU and memory allocations (512Mi memory, 1 CPU configured)
+- SQLite reduces costs by eliminating external database charges
 
 ## Cleanup
 
@@ -197,9 +196,6 @@ To delete all resources:
 ```bash
 # Delete Cloud Run service
 gcloud run services delete approval-workflow --region us-central1
-
-# Delete Cloud SQL instance (if created)
-gcloud sql instances delete approval-db
 
 # Delete container images
 gcloud container images delete gcr.io/$PROJECT_ID/approval-workflow
